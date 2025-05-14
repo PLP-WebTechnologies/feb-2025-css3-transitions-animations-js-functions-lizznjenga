@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CSS Animation & LocalStorage</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <h1>Choose Theme</h1>
+  <button id="toggleThemeBtn" class="animated-btn">Toggle Theme</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+body {
+    font-family: Arial, sans-serif;
+    transition: background-color 0.5s, color 0.5s;
+  }
+
+  body.light {
+    background-color: #ffffff;
+    color: #000000;
+  }
+
+  body.dark {
+    background-color: #121212;
+    color: #ffffff;
+  }
+
+  .animated-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    transition: transform 0.3s ease;
+  }
+
+  .animated-btn:hover {
+    transform: scale(1.1);
+  }
+  
+  /* Animation class */
+  @keyframes bounce {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+  }
+
+  .bounce {
+    animation: bounce 0.5s;
+  }
+  const toggleBtn = document.getElementById('toggleThemeBtn');
+
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.body.classList.add(savedTheme);
+  });
+
+  toggleBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    document.body.classList.toggle('light');
+
+    const currentTheme = document.body.classList.contains('dark') ? 'dark' : 'light';
+  localStorage.setItem('theme', currentTheme);
+
+  toggleBtn.classList.add('bounce');
+
+  toggleBtn.addEventListener('animationend', () => {
+    toggleBtn.classList.remove('bounce');
+  }, { once: true });
+});
